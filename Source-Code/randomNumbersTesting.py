@@ -89,6 +89,10 @@ def createSignHash():
 
 def testRandomness(category):
   signHash=createSignHash2()
+  isSquare={}
+  sqr=int(math.sqrt(nterms))
+  for k in range(sqr):
+    isSquare[k*k]=1
   count=0
   count1=0
   sumL=0
@@ -100,7 +104,7 @@ def testRandomness(category):
     selected=False
     if category=='Prime' and k in primeSign:
       selected=True
-    elif category=='nonPrime' and k not in primeSign:
+    elif category=='nonSquare' and k not in isSquare:
       selected=True
     elif category=='All':
       selected=True
@@ -124,7 +128,6 @@ def testRandomness(category):
 #   seed=(y,z) with z>y, z!=2y, y!=2x and x,y>0 are integers for 'SQRT'
 #   swapping -1/+1 for seed=(90,91) in 'SQRT' does well, the original does not
 
-nterms=20000
 seedMethod={}
 seedMethod['Python']=(0,1,2,4,100,200,500)
 seedMethod['Logistic']=(0.181517,0.72)
@@ -132,6 +135,8 @@ seedMethod['Base3']=(0.181517,0.72)
 seedMethod['SQRT']=((2,5),(90,91))
 seedMethod['Dirichlet4']=(1,3)
 seedMethod['CounterExample']=(1,0)
+
+nterms=20000
 
 OUT=open("prgTest.txt", "w")
 for method in seedMethod:
@@ -146,10 +151,10 @@ for method in seedMethod:
     line=line+str(argMax)+'\t'+str(count1)+'\t'+str(count)+'\t'+str(seed)+'\n'
     OUT.write(line)
     
-    [minL,argMin,maxL,argMax,count,count1]=testRandomness('nonPrime')
+    [minL,argMin,maxL,argMax,count,count1]=testRandomness('nonSquare')
 
-    print(method,'nonPrime',minL,maxL,"|",argMin,argMax,"|",count1,count,seed)
-    line=method+'\tnonPrime\t'+str(minL)+'\t'+str(maxL)+'\t'+str(argMin)+'\t'
+    print(method,'nonSquare',minL,maxL,"|",argMin,argMax,"|",count1,count,seed)
+    line=method+'\tnonSquare\t'+str(minL)+'\t'+str(maxL)+'\t'+str(argMin)+'\t'
     line=line+str(argMax)+'\t'+str(count1)+'\t'+str(count)+'\t'+str(seed)+'\n'
     OUT.write(line)
 
