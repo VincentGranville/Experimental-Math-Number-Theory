@@ -1,4 +1,5 @@
 # Comparing binary digits of SQRT(2) obtained with two different methods
+# By Vincent Granville, https://www.MLTechniques.com/resources/
 
 # Method 1:
 # 10,000 binary digits of SQRT(2) obtained via https://mltblog.com/3uMZQ4s
