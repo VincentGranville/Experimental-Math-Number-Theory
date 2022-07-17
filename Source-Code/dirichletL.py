@@ -84,13 +84,9 @@ for k in sorted(signHash):
 def G(tau,sig,nterms):
   fetax=0
   fetay=0
-  # sum=0 ####
   for j in sorted(signHash):
     fetax=fetax+math.cos(tau*tlog[j])*denum[j]
     fetay=fetay+math.sin(tau*tlog[j])*denum[j]
- #   sum=sum+signHash[j]
- #   line=str(signHash[j])+"\t"+str(sum)+"\t"+str(j)+"\t"+str(fetax)+"\t"+str(fetay)+"\n" ###
- #   OUT.write(line)    ###
   return [fetax,fetay]
 
 minT=0.0
@@ -106,7 +102,7 @@ while t <maxT:
   loop=loop+1
   (etax,etay)=G(t,sig,nterms)
   line=str(t)+"\t"+str(etax)+"\t"+str(etay)+"\n"
-  OUT.write(line) ###    
+  OUT.write(line)   
   t=t+increment
 OUT.close()
 
