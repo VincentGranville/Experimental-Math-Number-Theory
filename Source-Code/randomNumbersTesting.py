@@ -1,5 +1,5 @@
 # Test rabdomness of binary sequences via the law of the iterated lograrithm
-# By Vincent Granville, www.MLTechniques.com
+# By Vincent Granville, https://www.MLTechniques.com/resources/
 
 import math
 import random
