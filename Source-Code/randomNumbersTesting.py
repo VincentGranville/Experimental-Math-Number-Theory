@@ -1,5 +1,5 @@
 # Test rabdomness of binary sequences via the law of the iterated lograrithm
-# By Vincent Granville, https://www.MLTechniques.com/resources/
+# By Vincent Granville, www.MLTechniques.com
 
 import math
 import random
@@ -20,7 +20,9 @@ def createRandomDigits(method,seed):
   start=2
   if method=='Dirichlet4':
     start=3
-  for k in range(start,nterms):  
+  for k in range(start,nterms):
+    if k%2500==0:
+      print(k,"/",nterms)  
     if primes.check(k):
       primeSign[k]=1
       if method=='SQRT':
@@ -135,35 +137,23 @@ seedMethod['Base3']=(0.181517,0.72)
 seedMethod['SQRT']=((2,5),(90,91))
 seedMethod['Dirichlet4']=(1,3)
 seedMethod['CounterExample']=(1,0)
+categoryList=('Prime','nonSquare','All')
 
-nterms=20000
+nterms=10000
 
-OUT=open("prgTest.txt", "w")
+OUT=open("prngTest.txt", "w")
 for method in seedMethod:
   for seed in seedMethod[method]:
+    for category in categoryList:
 
-    primeSign=createRandomDigits(method,seed)
+      primeSign=createRandomDigits(method,seed)
+      [minL,argMin,maxL,argMax,count,count1]=testRandomness(category)
+
+      string1=("%14s %9s|%5d %5d|%5d %5d|%5d %5d|" % (method,category,\
+        minL,maxL,argMin,argMax,count1,count))+str(seed) 
+      print(string1)
+      string2=("%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t" % (method,category,\
+        minL,maxL,argMin,argMax,count1,count))+str(seed)+'\n'
+      OUT.write(string2)
     
-    [minL,argMin,maxL,argMax,count,count1]=testRandomness('Prime')
-
-    print(method,'Prime',minL,maxL,"|",argMin,argMax,"|",count1,count,seed)
-    line=method+'\tPrime\t'+str(minL)+'\t'+str(maxL)+'\t'+str(argMin)+'\t'
-    line=line+str(argMax)+'\t'+str(count1)+'\t'+str(count)+'\t'+str(seed)+'\n'
-    OUT.write(line)
-    
-    [minL,argMin,maxL,argMax,count,count1]=testRandomness('nonSquare')
-
-    print(method,'nonSquare',minL,maxL,"|",argMin,argMax,"|",count1,count,seed)
-    line=method+'\tnonSquare\t'+str(minL)+'\t'+str(maxL)+'\t'+str(argMin)+'\t'
-    line=line+str(argMax)+'\t'+str(count1)+'\t'+str(count)+'\t'+str(seed)+'\n'
-    OUT.write(line)
-
-
-    [minL,argMin,maxL,argMax,count,count1]=testRandomness('All')
-
-    print(method,'All',minL,maxL,"|",argMin,argMax,"|",count1,count,seed)
-    line=method+'\tAll\t'+str(minL)+'\t'+str(maxL)+'\t'+str(argMin)+'\t'
-    line=line+str(argMax)+'\t'+str(count1)+'\t'+str(count)+'\t'+str(seed)+'\n'
-    OUT.write(line)
-
 OUT.close()
