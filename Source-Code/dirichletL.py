@@ -1,15 +1,16 @@
-# Generate orbits of various Dirichlet-L and related functions
+# DirichletL.py. Generate orbits of various Dirichlet-L and related functions
 # By Vincent Granville, https://www.MLTechniques.com/resources/
 
 import math
 import random
 from primePy import primes
 
-nterms=10000
-method='Dirichlet4'
-sig=0.5
+nterms=2000 # increase to 10000 for sig = 0.5
+method='Eta'
+sig=0.9
 Dirichlet=False 
-x=1  # must have 0 < x <= 1
+x=1  # must have 0 < x <= 1; default is x=1
+beta=0.5 # beta > 0.5 magnifies the hole of the orbit 
 
 random.seed(1)
 primeSign={}
@@ -23,7 +24,7 @@ for k in range(start,nterms):
     p=k
     xpow=x**(1/p)
     if method=='Beurling' and p==3:
-      p=2+math.log(2)
+      p=2+math.log(3)
     primeSign[p]=xpow
     if method=='Dirichlet4' and k%4==3:
       primeSign[p]=-xpow
@@ -80,6 +81,7 @@ for k in sorted(signHash):
   if sumL>maxL:
     maxL=sumL
     argMax=k
+denum[2]=signHash[2]/(1/beta)**sig 
 
 def G(tau,sig,nterms):
   fetax=0
@@ -90,8 +92,8 @@ def G(tau,sig,nterms):
   return [fetax,fetay]
 
 minT=0.0
-maxT=200.0 
-increment=0.01
+maxT=2000.0 
+increment=0.05
 
 OUT  = open("dirichletL.txt", "w")
 t=minT
@@ -102,11 +104,10 @@ while t <maxT:
   loop=loop+1
   (etax,etay)=G(t,sig,nterms)
   line=str(t)+"\t"+str(etax)+"\t"+str(etay)+"\n"
-  OUT.write(line)   
+  OUT.write(line) 
   t=t+increment
 OUT.close()
 
 print("\n")
 print(argMin,"-->",minL)
 print(argMax,"-->",maxL)
-
