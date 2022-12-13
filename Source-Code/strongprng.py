@@ -4,13 +4,13 @@ import time
 import random
 import numpy as np
 
-size =  400 # number of binary digits in each number
-Niter =  5000 # number of quadratic irrationals
-start = 0  # first value of (y, z) is (1, start)
-yseed = 1  # y = yseed
-offset =  100 #    skip first offset digits (all zeroes) of each number
+size =  400        # number of binary digits in each number
+Niter =  5000      # number of quadratic irrationals
+start = 0          # first value of (y, z) is (1, start)
+yseed = 1          # y = yseed
+offset =  100      #    skip first offset digits (all zeroes) of each number
 PRNG = 'Quadratic' # options: 'Quadratic' or 'Mersenne' 
-output = True # True to print results (slow)
+output = True      # True to print results (slow)
 
 squareFreeList = {}
 digits = {}
@@ -82,4 +82,3 @@ if output == True:
     OUT.close()
 
 print("Accepted seeds:",accepted," out of",Niter)
-
