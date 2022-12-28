@@ -3,45 +3,6 @@ from matplotlib import cm # color maps
 import numpy as np
 import mpmath
 
-########### ortho: plt.quiver // called direction fields
-########## create maximum ascent map
-############# no basin, every rain drop falling in the band ends up on the axis Re(s) = 0.5 following a smooth simple path
-#### spectrum shows what happens at sigma=0.5 for a fiven t, propagates to sigma = 1 (and also below sigma = 0.5)
-#######    plot between t=150 and 250
-#### plot path from a rain drop
-#### what other functions have this behavior? sin or sinh in complex plane??? functions with infinite hadamard product
-#### can hydrology solves the most famous mathematical problem of all times??
-#### plot curve at sigma = 0.5 vs sigma = 1
-#### add an artificial zero or basin in the fction to see impact
-#### compare with basins on earth: great basin above seal level, but not death valley!!
-#### steepest descent algo .. familiar to ML practitioners
-#### all minimal are the zeros
-#### compare with Dirichlet eta and other fcts with infinite product : sin or (sinh z)*(sinh(sqrt 2 z)) or sinh(z sqrt(z))
-#### is there always a unidirectional path?? getting to closest root? use a band b/w 2 maxima
-#### sin 2x = 2 sin x cos x = ... use iteratively
-#### study at sigma=3 (using derivative to find min) to find roots at sigma < 1 bc it is a lot faster// eta or zeta
-### macro / micro (micro basins?) / local levels
-### rescale to make spectral lines vertical, eg better with dircichlet eta than zeta
-### update video to fit with za
-#### fixed t, sigma varies (opposite of standard view)
-### gradient on grid works with chaotic fctions
-#### formula for zeta based on cosine terms
-#### conformal map / synthetic function ref. to book
-#### use my cosine expansion formula based on integer values to compute modulus of zeta at sigma + i t
-#### title: generative AI yields novel approach to the RH, and converserly [synthetic functions]
-####### https://problemsolvingwithpython.com/06-Plotting-with-Matplotlib/06.15-Quiver-and-Stream-Plots/
-   ### see example using gradient
-   ### https://math24.net/orthogonal-trajectories.html
-   ### https://medium.com/analytics-vidhya/visualize-the-gradient-descent-of-a-cost-function-with-its-level-circles-python-d8c850731b0a
-### can end up on different root depending on step size
-######### grid layers with increased granularity
-######### monotonic transform of za to accelerate convergence
-##### https://en.wikipedia.org/wiki/Weierstrass_factorization_theorem
-###       https://mathworld.wolfram.com/HadamardProduct.html
-###       https://en.wikipedia.org/wiki/Riemann_zeta_function#Hadamard_product
-#### moderate descent vs. steepest descent [using unequal steps x y in the grid] 
-### curves with gene > 1 pick more than 1 as level not identical // start with 2 curves to create ortho
-
 View = 'Local'       # options: 'Local' or 'Global'
 Function = 'Sinh2'   # options: 'Zeta', 'Eta', 'Sinh1', 'Sinh2'
 Contour = 'Lines'    # options: 'Lines', 'Surface'
