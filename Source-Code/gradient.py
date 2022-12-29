@@ -182,8 +182,8 @@ def gradient_descent(t, sigma, showStart, showEnd, showPath, mode, n_iter, \
         x.append(t)
         y.append(sigma)
         old_z = za[h, k]
-        h = int(0.5+(sigma - min_sigma)/incr_sigma) ####################### I added 0.5+
-        k = int(0.5+(t - min_t)/incr_t)             ####################### I added 0.5+
+        h = int(0.5+(sigma - min_sigma)/incr_sigma)
+        k = int(0.5+(t - min_t)/incr_t)             
         if h<h_steps-2 and k<k_steps-2 and h>0 and k>0: 
             z = za[h, k]
         else:
