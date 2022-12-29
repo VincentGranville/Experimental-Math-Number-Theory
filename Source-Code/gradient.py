@@ -6,7 +6,7 @@ import mpmath
 View = 'Local'       # options: 'Local' or 'Global'
 Function = 'Sinh2'   # options: 'Zeta', 'Eta', 'Sinh1', 'Sinh2'
 Contour = 'Lines'    # options: 'Lines', 'Surface'
-Video = 'True'       # options: 'True' or 'False'
+Video = True         # options: True or False
 Granularity = 'Low'  # options: 'Low' or 'High'
 
 if View == 'Local':
@@ -17,15 +17,15 @@ if View == 'Local':
     if Granularity == 'High':
         incr_t = 0.0025 # slow, also requires 4x more memory
     elif Granularity == 'Low':
-        incr_t = 0.005 # 4x faster than 'High', less accurate 
+        incr_t = 0.005  # 4x faster than 'High', less accurate 
     incr_sigma = incr_t*(max_sigma - min_sigma)/(max_t - min_t)    
 elif View == 'Global':
     min_t = 165
-    max_t = 220
-    min_sigma = 0.45
-    max_sigma = 2
-    incr_t = 0.1 
-    incr_sigma = 0.01
+    max_t = 185
+    min_sigma = 0.50
+    max_sigma = 1.10
+    incr_t = 0.05 
+    incr_sigma = 0.05
 nlevels = 180 # number of contour levels (120 for zeta)
 
 #--- Store values of bivariate function in grid za[( , )]
@@ -81,7 +81,7 @@ if Video:
     import moviepy.video.io.ImageSequenceClip  # to produce mp4 video
     from PIL import Image  # for some basic image processing
 
-    Nframes = 30 
+    Nframes = 250 
     flist=[]               # list of image filenames for the video
     w, h, dpi = 4, 3, 300  # width and heigh in inches
     fps=10                 # frames per second
@@ -111,14 +111,39 @@ if Video:
 
 fig = plt.figure(figsize =(12, 8), dpi=240)
 axes = plt.axes()
-CS = axes.contour(xa, ya, za, levels=nlevels, cmap=cm.coolwarm, linewidths=0.75) 
 fig.colorbar(surf, ax = axes, shrink = 0.5, aspect = 5)
-
 # Add horizontal dashed line at sigma = 0.5 (the 'critical line') 
 #     https://matplotlib.org/stable/gallery/lines_bars_and_markers/linestyles.html
 plt.plot((min_t,max_t),(0.5,0.5),color='black',linestyle=(0,(15,15)),linewidth=0.2)
-plt.savefig('RH4_contours.png',bbox_inches='tight')
 
+if View == 'Global':
+    CS = axes.contourf(xa, ya, za, levels=nlevels, cmap=cm.coolwarm) ############## contourf
+    plt.savefig('RH4_contours.png',bbox_inches='tight')
+    sigma_low  = 0.5 # must be > min_sigma
+    sigma_mid  = 0.7
+    sigma_high = 1.0   # must be < max_sigma (h_high < h_steps -1)
+    sigma_max  = max_sigma
+    h_low  = int(0.5+(sigma_low - min_sigma)/incr_sigma)
+    h_mid  = int(0.5+(sigma_mid - min_sigma)/incr_sigma)
+    h_high = int(0.5+(sigma_high - min_sigma)/incr_sigma)
+    h_max  = h_steps-2
+    OUT=open("gradient_LH.txt","w")
+    header="\tsigma=%f\tsigma=%f\tsigma=%f\tsigma=%f\n" \
+            % (sigma_low,sigma_mid,sigma_high,sigma_max)
+    OUT.write(header)
+    for k in range(k_steps-1):
+        t = min_t + incr_t*k
+        z_low  = za[h_low, k]
+        z_mid  = za[h_mid, k]
+        z_high = za[h_high, k]
+        z_max  = za[h_max, k]
+        line = str(t)+"\t"+str(z_low)+"\t"+str(z_mid)+"\t"+str(z_high)+"\t"+str(z_max)+"\n"
+        OUT.write(line)
+    OUT.close()
+    exit() 
+else:
+    CS = axes.contour(xa, ya, za, levels=nlevels, cmap=cm.coolwarm, linewidths=0.75) 
+    plt.savefig('RH4_contours.png',bbox_inches='tight')
 
 #--- Steepest descent on contour map: sample paths to minimum (a root of |Zeta|)
 #    requires: Granulary = 'High', View = 'Local'
@@ -157,8 +182,8 @@ def gradient_descent(t, sigma, showStart, showEnd, showPath, mode, n_iter, \
         x.append(t)
         y.append(sigma)
         old_z = za[h, k]
-        h = int((sigma - min_sigma)/incr_sigma)
-        k = int((t - min_t)/incr_t)
+        h = int(0.5+(sigma - min_sigma)/incr_sigma) ####################### I added 0.5+
+        k = int(0.5+(t - min_t)/incr_t)             ####################### I added 0.5+
         if h<h_steps-2 and k<k_steps-2 and h>0 and k>0: 
             z = za[h, k]
         else:
@@ -186,8 +211,6 @@ def gradient_descent(t, sigma, showStart, showEnd, showPath, mode, n_iter, \
 
 #--- Steepest descent: main part 
 
-if View != 'Local':
-    print('View = Local required')
 
 dy, dx = np.gradient(za)      # matrices with same dim as za 
 norm = np.sqrt(dx*dx + dy*dy) # matrix with same dim as za
