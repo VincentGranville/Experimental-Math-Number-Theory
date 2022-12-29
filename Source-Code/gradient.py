@@ -89,7 +89,9 @@ if Video:
     for frame in range(0,Nframes): 
         image='RH4_'+str(frame)+'.png' # filename of image in current frame
         print("Creating image",image) # show progress on the screen
-        axes.view_init(30, 80+ 10 * frame)
+        angle_vertical = 30 + 30 * np.sin(12*frame/Nframes)
+        angle_horizontal = 80+ frame * 360 / Nframes
+        axes.view_init(angle_vertical, angle_horizontal)
         plt.savefig(image,bbox_inches='tight')
         im = Image.open(image)
         if frame == 0:  # all images must have the same size
