@@ -20,8 +20,8 @@ if View == 'Local':
         incr_t = 0.005  # 4x faster than 'High', less accurate 
     incr_sigma = incr_t*(max_sigma - min_sigma)/(max_t - min_t)    
 elif View == 'Global':
-    min_t = 165
-    max_t = 185
+    min_t = 200
+    max_t = 300
     min_sigma = 0.50
     max_sigma = 1.10
     incr_t = 0.05 
@@ -36,7 +36,7 @@ ya = np.arange(min_sigma, max_sigma, incr_sigma)
 xa, ya = np.meshgrid(xa, ya)
 k_steps = 1 + int((max_t - min_t)/incr_t)
 h_steps = 1 + int((max_sigma - min_sigma)/incr_sigma)
-za = np.abs(0*xa + 0*ya) # set dimensions for za
+za = np.empty(shape=(len(xa),len(ya)))  # set dimensions for za
 
 k=0
 for t in np.arange(min_t, max_t, incr_t):
@@ -117,7 +117,7 @@ fig.colorbar(surf, ax = axes, shrink = 0.5, aspect = 5)
 plt.plot((min_t,max_t),(0.5,0.5),color='black',linestyle=(0,(15,15)),linewidth=0.2)
 
 if View == 'Global':
-    CS = axes.contourf(xa, ya, za, levels=nlevels, cmap=cm.coolwarm) ############## contourf
+    CS = axes.contourf(xa, ya, za, levels=nlevels, cmap=cm.coolwarm) 
     plt.savefig('RH4_contours.png',bbox_inches='tight')
     sigma_low  = 0.5 # must be > min_sigma
     sigma_mid  = 0.7
