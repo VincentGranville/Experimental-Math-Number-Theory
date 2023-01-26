@@ -237,7 +237,7 @@ for line in CS.collections[level].get_paths():
 x = lines[0][:, 0]
 y = lines[0][:, 1]
 n = len(x)
-showStart = False
+showStart = True
 showEnd   = False
 showPath  = True
 n_iter = 3000 
