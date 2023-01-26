@@ -172,13 +172,15 @@ def gradient_descent(t, sigma, showStart, showEnd, showPath, mode, n_iter, \
         sign = -1
          
     iter = 0
+    norm2 = np.sqrt(incr_t**2 + incr_sigma**2)
+    # previous version used norm[h,k] instead of norm2 (wrong but it worked well)
     while iter < n_iter:
         if type == 'Gradient':
-            t = t - learn_t * sign * dx[h,k]/norm[h,k]  
-            sigma = sigma - learn_sigma * sign * dy[h,k]/norm[h,k]    
+            t = t - learn_t * sign * dx[h,k]/norm2  
+            sigma = sigma - learn_sigma * sign * dy[h,k]/norm2    
         elif type == 'Contour':
-            t = t - learn_t * sign * dy[h,k]/norm[h,k]  
-            sigma = sigma + learn_sigma * sign * dx[h,k]/norm[h,k]    
+            t = t - learn_t * sign * dy[h,k]/norm2  
+            sigma = sigma + learn_sigma * sign * dx[h,k]/norm2    
         x.append(t)
         y.append(sigma)
         old_z = za[h, k]
