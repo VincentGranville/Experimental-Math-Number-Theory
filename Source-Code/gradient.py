@@ -172,17 +172,16 @@ def gradient_descent(t, sigma, showStart, showEnd, showPath, mode, n_iter, \
         sign = -1
          
     iter = 0
-    norm2 = np.sqrt(incr_t**2 + incr_sigma**2)
-    # previous version used norm[h,k] instead of norm2 (wrong but it worked well)
     while iter < n_iter:
         if type == 'Gradient':
-            t = t - learn_t * sign * dx[h,k]/norm2  
-            sigma = sigma - learn_sigma * sign * dy[h,k]/norm2    
+            t = t - learn_t * sign * dx[h,k]/incr_t    
+            sigma = sigma - learn_sigma * sign * dy[h,k]/incr_sigma     
         elif type == 'Contour':
-            t = t - learn_t * sign * dy[h,k]/norm2  
-            sigma = sigma + learn_sigma * sign * dx[h,k]/norm2    
-        x.append(t)
-        y.append(sigma)
+            t = t - learn_t * sign * dy[h,k]/incr_sigma  
+            sigma = sigma + learn_sigma * sign * dx[h,k]/incr_t 
+        if t>min_t and t<max_t and sigma>min_sigma and sigma<max_sigma:   
+            x.append(t)
+            y.append(sigma)
         old_z = za[h, k]
         h = int(0.5+(sigma - min_sigma)/incr_sigma)
         k = int(0.5+(t - min_t)/incr_t)             
@@ -207,7 +206,8 @@ def gradient_descent(t, sigma, showStart, showEnd, showPath, mode, n_iter, \
         # show where the iteration converged
         sigma=int(0.5+100*sigma)/100
         t=int(0.5+100*t)/100
-        plt.plot(t, sigma, marker="o", markersize=5, markerfacecolor="palegreen",color="black")
+        if t>min_t and t<max_t and sigma>min_sigma and sigma<max_sigma:
+            plt.plot(t, sigma, marker="o", markersize=5, markerfacecolor="palegreen",color="black")
 
     return(x, y)  
 
@@ -240,7 +240,7 @@ x = lines[0][:, 0]
 y = lines[0][:, 1]
 n = len(x)
 showStart = True
-showEnd   = False
+showEnd   = True
 showPath  = True
 n_iter = 3000 
 step = 5 # for zeta choose step=10
