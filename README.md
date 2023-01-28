@@ -18,9 +18,7 @@ In about 10 pages (plus Python code, exercises and figures), this article consti
   
   <b>Summary</b>
   
-  I discuss techniques related to the gradient descent method in 2D. The goal is to find the minima of a target function, called the cost function. The values of the function are computed at evenly spaced locations on a grid and stored in memory. Because of this, the approach is not directly based on derivatives, and there is no calculus involved. It implicitly uses discrete derivatives, but foremost, it is a simple geometric algorithm. The learning parameter typically attached to gradient descend is explicitly specified here: it is equal to the granularity of the mesh and does not need fine-tuning. In addition to gradient descent and ascent, I also show how to build contour lines and orthogonal trajectories, with the exact same algorithm.
-
-I apply the method to investigate one of the most famous unsolved problems in mathematics: the Riemann Hypothesis. The functions studied here are are defined on the complex plane.
+  I discuss techniques related to the gradient descent method in 2D. The goal is to find the minima of a target function, called the cost function. The values of the function are computed at evenly spaced locations on a grid and stored in memory. Because of this, the approach is not directly based on derivatives, and there is no calculus involved. It implicitly uses discrete derivatives, but foremost, it is a simple geometric algorithm. The learning parameter typically attached to gradient descend is explicitly specified here: it is equal to the granularity of the mesh and does not need fine-tuning. In addition to gradient descent and ascent, I also show how to build contour lines and orthogonal trajectories, with the exact same algorithm. I apply the method to investigate one of the most famous unsolved problems in mathematics: the Riemann Hypothesis. The functions studied here are are defined on the complex plane.
 </li>
 
 </ul>
