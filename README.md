@@ -13,4 +13,14 @@ I discuss, in simple English, how to detect weak deviations from randomness, and
 In about 10 pages (plus Python code, exercises and figures), this article constitutes a scratch course on the subject. It covers a large range of topics, both recent as well as unpublished, in a very compact style. Full of clickable references, the document covers the basics, offering a light reading experience. It also includes plenty of advanced, state-of-the-art material explained as simply as possible. Written by a machine learning professional working on experimental math, it is targeted to other machine learning professionals. Physicists, mathematicians, quants, statisticians and engineers will hopefully find this document easy to read, interesting, and opening up new research horizons. Exercise 8 is particularly intriguing, showing a potential new path to proving the Riemann Hypothesis.
     
   </li>
+  
+  <li> <i>Math-free, Parameter-free Gradient Descent in Python</i>, available <a href="https://mltechniques.com/2023/01/28/math-free-parameter-free-gradient-descent-in-python/">here</a>.
+  
+  <b>Summary</b>
+  
+  I discuss techniques related to the gradient descent method in 2D. The goal is to find the minima of a target function, called the cost function. The values of the function are computed at evenly spaced locations on a grid and stored in memory. Because of this, the approach is not directly based on derivatives, and there is no calculus involved. It implicitly uses discrete derivatives, but foremost, it is a simple geometric algorithm. The learning parameter typically attached to gradient descend is explicitly specified here: it is equal to the granularity of the mesh and does not need fine-tuning. In addition to gradient descent and ascent, I also show how to build contour lines and orthogonal trajectories, with the exact same algorithm.
+
+I apply the method to investigate one of the most famous unsolved problems in mathematics: the Riemann Hypothesis. The functions studied here are are defined on the complex plane.
+</li>
+
 </ul>
