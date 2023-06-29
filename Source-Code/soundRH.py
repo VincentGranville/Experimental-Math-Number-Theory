@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 import mpmath
@@ -59,9 +60,18 @@ min = np.min(v)
 max = np.max(v)
 vf = 500 + 2000*(1 - (v-min)/(max-min)) 
 
-plt.plot(x, y, color='red', linewidth = 0.6)
-plt.plot(x, z, color='blue', linewidth = 0.6)
-plt.plot(x, v, color='green', linewidth = 0.6)
+#-- plot data
+
+mpl.rcParams['axes.linewidth'] = 0.3
+fig, ax = plt.subplots()
+ax.tick_params(axis='x', labelsize=7)
+ax.tick_params(axis='y', labelsize=7) 
+plt.rcParams['axes.linewidth'] = 0.1
+plt.plot(x, y, color='red', linewidth = 0.3)
+plt.plot(x, z, color='blue', linewidth = 0.3)
+plt.plot(x, v, color='green', linewidth = 0.3)
+plt.legend(['frequency','duration','volume'], fontsize="7", 
+    loc ="upper center", ncol=3)
 plt.show()
 
 #-- Turn the data into music
@@ -80,3 +90,4 @@ for t in x: # loop over dataset observations, create one note per observation
     new_wave = get_sine_wave(frequency, duration = zf[t], amplitude = vf[t])
     wave = np.concatenate((wave,new_wave))
 wavfile.write('sound.wav', rate=44100, data=wave.astype(np.int16))
+
