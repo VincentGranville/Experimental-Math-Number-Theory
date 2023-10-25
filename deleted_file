@@ -1,0 +1,7 @@
+
+            run = L 
+            if run > max_run:
+                max_run = run
+                print(n-L, run, max_run)
+            L = 0
+    last_digit = d
