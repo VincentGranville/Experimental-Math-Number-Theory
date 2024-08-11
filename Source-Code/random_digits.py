@@ -88,7 +88,6 @@ seed = 659   # used if random = True
 np.random.seed(seed)
 
 # local variables
-###arr_delta = []
 digits = ""
 new_digits = ""
 hash1 = {}
@@ -182,7 +181,6 @@ for k in range(2, n+1, 1):
         delta = k - k_old
         zeros += new_digits.count('0')
         ones  += new_digits.count('1')
-        ### arr_delta.append(zeros-ones) #################
         size = len(new_digits)
         print("===>", k, l, size, delta, nu_k, nu_p, nu_q, match, zeros+ones, 
                zeros, ones, ">>", new_digits) 
@@ -291,7 +289,3 @@ elif mode == 'Special':
     print("Target:", np.sqrt(2)/4)
 
 print("Digits per n:", (zeros+ones)/n)
-
-
-
-
