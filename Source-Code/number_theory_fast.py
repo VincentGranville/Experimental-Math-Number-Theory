@@ -98,9 +98,6 @@ plt.rcParams['xtick.labelsize'] = 8
 plt.rcParams['ytick.labelsize'] = 8
 plt.rcParams['axes.facecolor'] = 'black'
 
-#ax = plt.axes()
-#ax.set_facecolor('silver')
-
 plt.scatter(xvalues, arr_count1,s=0.01,c=arr_colors) 
 plt.axhline(y=n/2,color='red',linestyle='--',linewidth=0.6,dashes=(5,10))   
 plt.axhline(y=n/5, color='black', linestyle='--', linewidth = 0.6, dashes=(5, 10))
