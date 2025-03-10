@@ -1,6 +1,6 @@
 # Faster version than number_theory_fast_v2.py
 #   - at iteration k, keep only 2n-k digits in S(n, k, x) instead of 2n
-#   - also remove the trainling 0 on the right, in S(n, k, x)
+#   - also remove the trailing 0 on the right, in S(n, k, x)
 #   - drawback: I get 19985 correct digits instead of 19998 if n = 20000
 
 n = 20000 
