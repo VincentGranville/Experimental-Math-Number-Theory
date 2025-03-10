@@ -1,6 +1,6 @@
 # Faster version than number_theory_fast_v2.py
 #   - at iteration k, keep only 2n-k digits in S(n, k, x) instead of 2n
-#   - also remove the trailing 0 on the right, in S(n, k, x)
+#   - also remove the trainling 0 on the right, in S(n, k, x)
 #   - drawback: I get 19985 correct digits instead of 19998 if n = 20000
 
 n = 20000 
@@ -116,19 +116,20 @@ for k in range(1, H+1):
 
     if k > kmin and k < kmax:   
         stri = stri[2:]
+        lstri = len(stri)
         if k == n:
             e_approx = stri
         estri = stri[0:n]   # leftmost n digits
-        ecnt1 = estri.count('1')    ### old version
-        ### ecnt1 = stri.count('1') ### new version
+        ecnt1 = estri.count('1')   
+        ecnt1f = stri.count('1') 
         arr_count1.append(ecnt1)
         color = assign_color(k)
         arr_colors.append(color)
         xvalues.append(k)
-        OUT.write(str(k) + "\t" + str(ecnt1) + "\n")
+        OUT.write(str(k)+"\t"+str(ecnt1)+"\t"+str(lstri)+"\t"+str(ecnt1f)+"\n")
  
     if k%1000 == 0:
-        print("%3d %3d" %(k, ecnt1))
+        print("%6d %6d %6d %6d" %(k, ecnt1, lstri,ecnt1f))
     if stri[-1] == '0':
         print(k, stri[-10:])
 
