@@ -57,7 +57,7 @@ def pre_compute(swap_primes, del_primes, N, mode):
         return(p_alog, p_arr_omega, p_arr_delta)
 
 
-def eta2(s, params):  ############### pass arguments ........
+def eta2(s, params):  
 
     # t is imaginary part
     sigma = s[0]
@@ -86,9 +86,6 @@ mode = 'unsorted' # options: 'sorted', 'unsorted'
 del_primes1 = (3, 5, 7) 
 m1 = len(del_primes1) + 1
 alog, arr_omega, arr_delta = pre_compute(swap_primes, del_primes1, N, mode)
-##for k in range(1, 40):
-##    if arr_delta[k] != 0:
-##        print("%3d %12.7f" %(k, arr_omega[k]*arr_delta[k]))
 params1 = [0, alog, arr_omega, arr_delta]
 
 del_primes2 = () 
@@ -111,12 +108,6 @@ plt.plot(arr_x, arr_y2, c='red', linewidth = 0.6, label="m = %d" %m2)
 plt.axhline(y=0.0, color='black', linestyle='dotted', linewidth = 0.3) 
 plt.legend(loc="upper right")
 plt.show()
-
-##alog = params1[1]
-##arr_omega = params1[2]
-##arr_delta = params1[3]
-##for k in range(n0, n1):
-##    print(k, alog[k], arr_omega[k], arr_delta[k]) 
 
 #--- 3. Changing primes in eta function
 
@@ -173,7 +164,7 @@ nfc = 0
 eps = 0.05
 
 params = [n, alog, arr_omega, arr_delta]
-for real in np.arange(0.45, 0.46, 0.001): ############ 1.05
+for real in np.arange(0.45, 1.05, 0.001): 
     print("Real: %7.4f" %(real))
     for imag in np.arange(10.00, 40.01, 0.1):
         init = np.array([real, imag])
@@ -252,5 +243,3 @@ plt.plot(arr_x, arr_y2, c='red', label="noise = %5.3f" %noise2, linewidth = 0.8)
 plt.axhline(y=0.0, color='black', linestyle='dotted', linewidth = 0.3) 
 plt.legend(loc="upper right")
 plt.show()
-
-
