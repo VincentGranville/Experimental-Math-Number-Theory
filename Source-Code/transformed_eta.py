@@ -193,28 +193,29 @@ print("Found: left: %5.3f right: %5.3f" % (found1/nfc, found2/nfc))
 
 from sympy import primerange, isprime
 
-def build_swap_primes(nprimes, noise):
+def build_swap_primes(nprimes, start, noise):  
 
     arr_primes = list(primerange(3, nprimes))
     swap_primes = {}
     seed = 503
     np.random.seed(seed)
     N_max = len(arr_primes)
-    for k in range(N_max):
+    for k in range(start, N_max):  
         prime = arr_primes[k]
         u = np.random.uniform(-noise, noise)
-        swap_primes[prime] = prime + u*(k**0.25) ##### k**0.25
+        swap_primes[prime] = prime + u*(k**0.25) 
     print("N_max: ", N_max)
     return(swap_primes, N_max)
 
 del_primes = ()
-nprimes = 300000
+nprimes = 300000 
 sigma = 0.5 
 t = 25.010858 # 0.5 + it is 3rd root of zeta
 s = [sigma, t]
 
-noise1 = 0.005 
-swap_primes1, N_max = build_swap_primes(nprimes, noise1)
+noise1 = 0.005
+start = 0 
+swap_primes1, N_max = build_swap_primes(nprimes, start, noise1) 
 mode = 'sorted' # options: 'sorted', 'unsorted'
 N = N_max  
 n0 = 4
@@ -224,7 +225,7 @@ alog, arr_omega, arr_delta = pre_compute(swap_primes1, del_primes, N, mode)
 params1 = [0, alog, arr_omega, arr_delta]
 
 noise2 = 0.000 
-swap_primes2, N_max = build_swap_primes(nprimes, noise2)
+swap_primes2, N_max = build_swap_primes(nprimes, start, noise2) 
 alog, arr_omega, arr_delta = pre_compute(swap_primes2, del_primes, N, mode)
 params2 = [0, alog, arr_omega, arr_delta]
 
