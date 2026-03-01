@@ -1,0 +1,89 @@
+import gmpy2
+
+def combinations_lexicographic_list(n, k, thresh, digit):
+
+    # Return a list with all k-combinations of range(n) in lexicographic order.
+    # Each combination is a tuple of indices (0..n-1).
+
+    # initial combination: [0, 1, ..., k-1]
+    c = list(range(k))
+    print("\nFinding extremes, exhaustive search... \n")
+
+    while True:
+
+        stri = ''
+        for idx in range(n):
+            if idx in c:
+                stri += str(digit)  # '0' or '1'
+            else:
+                stri += str(1-digit)
+
+        x0 = two_third + gmpy2.mpz(stri, 2)/2**n
+        if x0 >= 1:
+            x0 -= 1
+        x0_bin = gmpy2.digits(x0, 2)[0]
+        x0_bin = x0_bin[0:n]
+
+        y0 = one_third + gmpy2.mpz(stri, 2)/2**n
+        if y0 >= 1:
+            y0 -= 1
+        y0_bin = gmpy2.digits(y0, 2)[0]
+        y0_bin = y0_bin[0:n]
+
+        ratio_1 = k / n
+        ratio_2 = x0_bin.count('0') / n
+        ratio_3 = y0_bin.count('0') / n
+        flag_1 = False
+        flag_2 = False
+        flag_3 = False
+
+        if thresh < ratio_1 < 1 - thresh:
+            flag_1 = True 
+        if not thresh < ratio_2 < 1 - thresh:
+            flag_2 = True 
+        if not thresh < ratio_3 < 1 - thresh:
+            flag_3 = True 
+
+        if not flag_1 and flag_2 and flag_3:
+            print(stri, x0_bin, y0_bin, ratio_1, ratio_2, ratio_3)
+                
+        # find rightmost element that can be incremented
+        i = k - 1
+        while i >= 0 and c[i] == i + (n - k):
+            i -= 1
+
+        if i < 0:
+            # all combinations generated
+            break
+
+        # increment this element
+        c[i] += 1
+
+        # reset the tail to the minimal increasing sequence
+        for j in range(i + 1, k):
+            c[j] = c[j - 1] + 1
+
+    return() 
+
+#--- Main
+
+n = 16  
+k = 5
+stri = ''
+xtri = ''
+for idx in range(n):
+   if idx % 4 in (0,2):
+       stri += '1'
+       xtri += '0'
+   else:
+       stri += '0'
+       xtri += '1'
+
+ctx = gmpy2.get_context()  
+ctx.precision = 2*n 
+two_third = gmpy2.mpz(stri, 2)/2**n
+one_third = gmpy2.mpz(xtri, 2)/2**n
+thresh = 0.35
+digit = 1  # options: 0 or 1
+
+combinations_lexicographic_list(n, k, thresh, digit)
