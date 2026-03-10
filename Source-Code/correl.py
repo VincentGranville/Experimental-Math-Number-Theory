@@ -21,13 +21,13 @@ q  = 5
 
 def gmpy2_correl(z, p, q):
 
-    # correl b/w binary digits of z and pz/q
+    # correl b/w binary digits of z and pz/q (needs p < q)
     zstri = gmpy2.digits(z, 2)[0]   # get binary digits of z as a string
     zoff = gmpy2.digits(z, 2)[1]
 
     w = gmpy2.mpfr(z*p)/gmpy2.mpz(q) 
     woff = gmpy2.digits(w, 2)[1]
-    w_offset = '0' * (zoff - woff)
+    w_offset = '0' * (zoff - woff)  # works only if p < q
     wstri = w_offset + gmpy2.digits(w, 2)[0]
 
     prod = 0 
