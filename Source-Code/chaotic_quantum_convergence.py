@@ -15,7 +15,7 @@ z = gmpy2.log(2)
 
 # choose N < ndigits/2 to avoid losing precision
 N = 5000  
-mode = 'quantum'  # options: 'quantum' or 'chaotic'
+mode = 'chaotic'  # options: 'quantum' or 'chaotic'
 
 x0 = gmpy2.mpfr(0)
 x1 = gmpy2.mpfr(1)
@@ -63,8 +63,6 @@ def set_color(k, mode):
 #--- Main
 
 modulus = 4
-##arr_mod = np.zeros(modulus)
-##arr_cnt = np.zeros(modulus)
 hash_modulo = {}
 
 for k in range(2,N):
@@ -112,11 +110,12 @@ for residue in range(modulus):
     arr_vals = np.array(arr_vals)
     arr_exp = np.exp(arr_vals)
     iqr_rho = np.quantile(arr_exp,0.75) - np.quantile(arr_exp, 0.25)
-    mean_rho = np.exp(np.average(arr_vals))
+    mu = np.average(arr_vals)  ###
+    mean_rho = np.exp(mu) ####
     median = np.std(arr_vals)
     avg *= mean_rho
-    print("residue %2d | rho = %8.5f | irq = %8.5f | median = %8.5f" 
-                % (residue, mean_rho, iqr_rho, median))
+    print("residue %2d | mu = %8.5f | rho = %8.5f | irq = %8.5f | median = %8.5f" 
+                % (residue, mu, mean_rho, iqr_rho, median))
 avg = avg**(1/modulus)
 print("Rho: %8.5f" %(avg))
 
@@ -159,7 +158,4 @@ for lag in range(200):
 
 plt.plot(arr_lag, arr_autocorrel, linewidth = 0.5)
 plt.show()
-
-
-
 
