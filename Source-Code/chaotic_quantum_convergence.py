@@ -8,13 +8,13 @@ plt.rcParams['xtick.labelsize'] = 8
 plt.rcParams['ytick.labelsize'] = 8
 plt.rcParams['legend.fontsize'] = 'x-small'
 
-kmax = 3000
+ndigits = 10000 
 ctx = gmpy2.get_context()  
-ctx.precision = kmax 
-ndigits = ctx.precision  
+ctx.precision = ndigits   
 z = gmpy2.log(2)
 
-N = 50000
+# choose N < ndigits/2 to avoid losing precision
+N = 5000  
 mode = 'quantum'  # options: 'quantum' or 'chaotic'
 
 x0 = gmpy2.mpfr(0)
@@ -62,27 +62,63 @@ def set_color(k, mode):
 
 #--- Main
 
+modulus = 4
+##arr_mod = np.zeros(modulus)
+##arr_cnt = np.zeros(modulus)
+hash_modulo = {}
+
 for k in range(2,N):
     color = set_color(k, mode)
     if mode == 'quantum':
         x = 2*x2 - 16*x1 + 4*x0 
+        delta = 0
     elif mode == 'chaotic':
         x = abs(x2 - 3*x1)
     v = gmpy2.log(abs(x))/k
     w = gmpy2.exp(v)
-    log_rho = np.log(abs(float(x/x2)))
-    if k % 1 == 0 and k > N/10:  
-        print("%6d log_rho: %8.5f" % (k, log_rho))
+    rho     = float(x/x2)
+    if mode == 'chaotic':   
+        old_rho = float(x2/x1)
+        # delta should be 0 for k < ndigits/2
+        delta = rho**2 - 1 + 6/old_rho - 9/old_rho**2  
+    log_rho = np.log(abs(rho))
+    if k > N/10:  
+        print("%6d log_rho: %8.5f %8.5f %f" % (k, log_rho, delta, rho))
         arr_k.append(k)
         arr_x.append(w)  
         arr_col.append(color)
         arr_log_rho.append(log_rho)
+        residue = k % modulus
+        if residue in hash_modulo:
+            arr_local = hash_modulo[residue]
+            arr_local.append(log_rho)
+            hash_modulo[residue] = arr_local
+        else:
+            hash_modulo[residue] = [log_rho]
     x0 = x1
     x1 = x2
     x2 = x
 
 plt.scatter(arr_k, arr_x, c=arr_col, s=0.02)
 plt.show()
+plt.scatter(arr_k, arr_log_rho, c=arr_col, s=0.02)
+plt.show()
+plt.plot(arr_k, arr_log_rho, linewidth=0.4)
+plt.show()
+print("\nRho[residue] with modulus = %2d" %(modulus))
+avg = 1
+for residue in range(modulus):
+    arr_vals = hash_modulo[residue]
+    arr_vals = np.array(arr_vals)
+    arr_exp = np.exp(arr_vals)
+    iqr_rho = np.quantile(arr_exp,0.75) - np.quantile(arr_exp, 0.25)
+    mean_rho = np.exp(np.average(arr_vals))
+    median = np.std(arr_vals)
+    avg *= mean_rho
+    print("residue %2d | rho = %8.5f | irq = %8.5f | median = %8.5f" 
+                % (residue, mean_rho, iqr_rho, median))
+avg = avg**(1/modulus)
+print("Rho: %8.5f" %(avg))
 
 
 #--- Plot EPDFs
@@ -90,14 +126,16 @@ plt.show()
 np_log_rho = np.array(arr_log_rho)
 import seaborn as sns
 plt.figure(figsize=(8, 5))
-##sns.ecdfplot(np_rho)
+# sns.ecdfplot(np_rho)
 sns.kdeplot(data=np_log_rho, fill=True)
 plt.grid(True)
 plt.show()
 
 meanlog = np.mean(np_log_rho)
+medianlog = np.median(np_log_rho)
 mean = np.exp(meanlog)
-print("\nRho:", mean)
+median = np.exp(medianlog)
+print("\nRho: %8.5f [median = %8.5f | meanlog = %8.5f]" % (mean, median, meanlog))
 print()
 
 
@@ -121,3 +159,7 @@ for lag in range(200):
 
 plt.plot(arr_lag, arr_autocorrel, linewidth = 0.5)
 plt.show()
+
+
+
+
