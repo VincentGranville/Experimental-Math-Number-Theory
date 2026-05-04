@@ -4,8 +4,9 @@ import numpy as np
 import lzma 
 
 
-def test_frequencies(M, Lmax, rnd_bits): 
+def test_frequencies(Lmax, rnd_bits):   
     
+    M = len(rnd_bits) 
     print("\nString", end = " ")
     for test in range(M):
         print("  Test %1d" % test, end = " ")
@@ -26,8 +27,9 @@ def test_frequencies(M, Lmax, rnd_bits):
     return()
 
 
-def test_autocorrel(M, maxLag, rnd_bits): 
+def test_autocorrel(maxLag, rnd_bits):  
 
+    M = len(rnd_bits)  
     length = min(len(rnd_bits[0])-maxLag, 5000000)
     arr_max_correl = []
 
@@ -57,8 +59,9 @@ def update_hash(hash, key, count):
     return(hash)
 
 
-def test_collisions(M, L, rnd_bits): 
+def test_collisions(L, rnd_bits): 
 
+    M = len(rnd_bits)  
     length = len(rnd_bits[0]) - L
     arr_collisions = []
  
@@ -84,10 +87,11 @@ def test_collisions(M, L, rnd_bits):
     return()
 
 
-def test_spectral(M, rnd_bits): 
+def test_spectral(rnd_bits): 
     
     from math import erfc 
     arr_spectral = [] 
+    M = len(rnd_bits)  
 
     for m in range(M):
 
@@ -113,8 +117,9 @@ def test_spectral(M, rnd_bits):
     return()
 
 
-def test_compress(M, rnd_bits):
+def test_compress(rnd_bits): 
 
+    M = len(rnd_bits)  
     arr_compress = []
  
     for m in range(M):
@@ -132,10 +137,11 @@ def test_compress(M, rnd_bits):
     return()
 
 
-def test_runs(M, bit, rnd_bits):
+def test_runs(bit, rnd_bits):  
 
     import matplotlib.pyplot as plt
     import matplotlib as mpl
+    M = len(rnd_bits)  
 
     mpl.rcParams['axes.linewidth'] = 0.5
     plt.rcParams['xtick.labelsize'] = 8
@@ -187,3 +193,5 @@ def test_runs(M, bit, rnd_bits):
     ax2.legend(loc='upper left')
     plt.show()
     return()
+
+
