@@ -124,6 +124,7 @@ def test_compress(rnd_bits):
  
     for m in range(M):
         bit_string = rnd_bits[m]
+
         padded_bit_string = bit_string.ljust((len(bit_string) + 7) // 8 * 8, '0')
         byte_data = int(padded_bit_string, 2).to_bytes(len(padded_bit_string) // 8, byteorder='big')
         compressed_data = lzma.compress(byte_data, preset=9)
@@ -195,3 +196,49 @@ def test_runs(bit, rnd_bits):
     return()
 
 
+def text_next_bit(rnd_bits):  
+
+    from sklearn.neural_network import MLPClassifier
+    from scipy.stats import binom
+
+    M = len(rnd_bits)  
+    n = 1000               # samples to extract from string
+    window = 10            # predict next bit based on previous bits in window
+    split = int(0.80 * n)  # 80% for training, 20% for testing
+    nobs = n - split
+    arr_accuracy = []
+    length = len(rnd_bits[0])
+    np.random.seed(56)     # PCG64 has issues if this seed is 56 or 58
+    offsets = np.random.randint(0, length-window, size=n)
+
+    for m in range(M):
+
+        bits = rnd_bits[m]
+        ibits = np.array([1 if b == '1' else 0 for b in bits], dtype=int)
+        # predict bit at position start+windown based on past window bits
+        X, y = [], []
+        for k in range(n):
+            start = offsets[k]
+            X.append(ibits[start : start + window])
+            y.append(ibits[start + window])
+        X_train, X_test = X[:split], X[split:]
+        y_train, y_test = y[:split], y[split:]
+
+        clf = MLPClassifier(hidden_layer_sizes=(32, 16), max_iter=2000, random_state=42)
+        clf.fit(X_train, y_train)
+        y_pred = clf.predict(X_test)
+        arr_errors = y_pred - y_test     # 0 if match; are errors randomly spread or not?
+        accuracy = clf.score(X_test, y_test)
+        arr_accuracy.append([accuracy, arr_errors])
+
+    print("\nnext-bit accuracy p_value (0.50 accuracy means cannot predict next bit)")
+    for test in range(len(arr_accuracy)):
+        arr_output = arr_accuracy[test]
+        accuracy = arr_output[0]
+        lower = min(accuracy, 1-accuracy) * nobs
+        upper = max(accuracy, 1-accuracy) * nobs
+        p_valueL = binom.cdf(lower, nobs, 0.50)
+        p_valueR = 1- binom.cdf(upper, nobs, 0.50)
+        p_value = p_valueL + p_valueR
+        print("Test %2d %8.5f %8.5f" % (test, accuracy, p_value))
+    return()
