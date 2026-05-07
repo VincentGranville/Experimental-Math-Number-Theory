@@ -196,7 +196,7 @@ def test_runs(bit, rnd_bits):
     return()
 
 
-def text_next_bit(rnd_bits):  
+def test_next_bit(rnd_bits):  
 
     from sklearn.neural_network import MLPClassifier
     from scipy.stats import binom
