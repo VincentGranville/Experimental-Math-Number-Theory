@@ -612,7 +612,7 @@ def get_all_sequences(seed, nlevels, left_start = 1):
         for arr1 in hash_arr:
 
             if sub_count % 100 == 0 and sub_count > 0:
-                print("qqqqqq",seed, level, sub_count,"/", count) 
+                print("GBL Progress:",seed, level, sub_count,"/", count) 
             sub_count += 1
             local_list = integrate(arr1, left_start)
 
